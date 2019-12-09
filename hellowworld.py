@@ -43,21 +43,19 @@ t.add_resource(ec2.SecurityGroup(
     ],
 ))
 
-ud = Base64(Join('\n', [
-    "#!/bin/bash",
-    "sudo yum install --enablerepo=epel -y nodejs",
-    "wget http://bit.ly/2vESNuc -O /home/ec2-user/helloworld.js",
-    "wget http://bit.ly/2vVvT18 -O /etc/init/helloworld.conf",
-    "start helloworld"
-]))
-
 t.add_resource(ec2.Instance(
     "instance",
     ImageId="ami-fe059791",
     InstanceType="t2.micro",
     SecurityGroups=[Ref("SecurityGroup")],
     KeyName=Ref("KeyPair"),
-    UserData=ud,
+    UserData=Base64(Join('\n', [
+        "#!/bin/bash",
+        "sudo yum install --enablerepo=epel -y nodejs",
+        "wget http://bit.ly/2vESNuc -O /home/ec2-user/helloworld.js",
+        "wget http://bit.ly/2vVvT18 -O /etc/init/helloworld.conf",
+        "start helloworld"
+    ])),
 ))
 
 t.add_output(Output(
