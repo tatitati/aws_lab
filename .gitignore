@@ -1,2 +1,5 @@
 .idea
 myec2keypar.json
+ecr/udemy
+**/node_modules
+**/package-lock.json
